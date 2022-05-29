@@ -1,5 +1,6 @@
 package com.simplilearn.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.simplilearn.entity.Director;
 import com.simplilearn.entity.Movie;
 import com.simplilearn.service.MovieService;
 
@@ -25,6 +27,20 @@ public class MovieController {
 		movieService.saveMovie(movie);
 		return movie.getId();
 	}
+	
+	@GetMapping("/director/{name}")
+	private List<String> getByDirectorName(@PathVariable("name") String name) {
+		List<Movie> movies = movieService.getMoviesByDirectorName(name);
+		List<String> movieNames = new ArrayList<String>();
+		
+		if(movies!=null && movies.size()>0) {
+			for(Movie movie : movies) {
+				movieNames.add(movie.getName());
+			}
+		}
+		return movieNames;
+	}
+	
 	
 	@GetMapping("/movies")
 	private List<Movie> getMovies() {
